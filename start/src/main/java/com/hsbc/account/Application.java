@@ -7,9 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Spring Boot Starter
  *
- * @author Frank Zhang
+ * @author yubo
  */
 @SpringBootApplication(scanBasePackages = {"com.hsbc.account", "com.alibaba.cola"})
+@MapperScan("com.hsbc.account.mapper")
 public class Application {
 
     public static void main(String[] args) {

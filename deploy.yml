@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hsbc-account-deployment
+  labels:
+    app: hsbc-account
+spec:
+  replicas: 2  # 实例数为2
+  selector:
+    matchLabels:
+      app: hsbc-account
+  strategy:
+    type: RollingUpdate  # 配置更新策略为滚动更新
+    rollingUpdate:
+      maxUnavailable: 1  # 更新时最大不可用实例数
+      maxSurge: 1        # 更新时最大新增实例数
+  template:
+    metadata:
+      labels:
+        app: hsbc-account
+    spec:
+      affinity:
+        podAntiAffinity:  # 配置反亲和性策略
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: hsbc-account
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      containers:
+        - name: hsbc-account-container
+          image: crpi-c1fosxni6gavqetm.cn-beijing.personal.cr.aliyuncs.com/hsbc-interview/hsbc-account:v1.0.1  # 指定镜像
+          ports:
+            - containerPort: 8080 
+          resources:
+            limits:
+              cpu: 500m
+              ephemeral-storage: 4Gi
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 2Gi
+              memory: 512Mi
