@@ -77,7 +77,6 @@ public class MnsService {
         client.close();
     }
 
-
     /**
      * 循环接收消息
      */
